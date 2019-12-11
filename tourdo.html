@@ -1,0 +1,92 @@
+<html>
+        <head>
+                <title>Flask Todo Project</title>
+                  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+                  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+                  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+                 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+                 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+             </head>
+    <body>
+         <div class ='alert alert-success'>
+               <div style='padding-top: 20px; padding-left:400px;'><h3>
+               <br><H1>Tourist Management List</H1></br>
+               </h3></div>
+           </div> <!--ends intro -->
+         </hr>
+         <br>
+           <br>
+         {% block content %}
+        {% if 'query_edit' in request.url %}
+        <div style='margin-left: 100px; width: 45%;'>
+        <div class="alert alert-info" role="alert">
+         <strong>Edit Event!</strong> Edit your selected data line here ...
+        </div>
+
+        {% for eresult in eresults %}
+
+        <form action = "edit" method = "POST">
+        <!-- <p>ToDo cid: <input class="form-control" type = "text" name = "cid" style='width: 100%;' value='{{eresult["cid"]}}'/></p>-->
+         <p>cname: <input class="form-control" type = "text" name = "cname" style='width: 100%;' value='{{eresult["cname"]}}' /></p>
+         <p>packagename:  <input class="form-control" type = "text" name = "packagename" style='width: 100%;' value='{{eresult["packagename"]}}' /></p>
+	     <p>destination: <input class="form-control" type = "text" name = "destination" style='width: 100%;' value='{{eresult["destination"]}}' /></p>
+
+         <input type ="hidden" name = "old_CID" value='{{eresult["cid"]}}' />
+
+
+         {% endfor %}
+
+         <br>
+
+         <p><input class="btn-primary" type = "submit" value = "Update Data" /></p>
+        </form>
+        </div>
+
+        {% else %}
+
+         <div style='margin-left: 100px; width: 45%;'>
+               <div class="alert alert-info" role="alert">
+                   <strong><H2>Add Data In Your List</H2></strong>
+               </div>
+
+               <form action = "insert" method = "POST">
+                <!--<p>Event Title: <input class="form-control" type = "text" name = "cid" style='width: 100%;' /></p>-->
+                <p>cname <input class="form-control" type = "text" name = "cname" style='width: 100%;' /></p>
+                <p>packagename : <input class="form-control" type = "text" name = "packagename" style='width: 100%;'/></p>
+                <br>
+			<p>destination : <input class="form-control" type = "text" name = "destination" style='width: 100%;'/></p>
+                <br>
+
+                <p><input class="btn-primary" type = "submit" value = "Insert Data" /></p>
+               </form>
+               </div>
+
+               {% endif %}
+               {% endblock content %}
+
+               <table class = 'table table-hover' style = 'margin-left: 100px; margin-right: 100px; width: 90%;'>
+                     <thead>
+                        <tr>
+                        <!--<th>NO</th>-->
+                        <!--<th>Cid</th>-->
+                        <th>cname</th>
+                        <th>packagename</th>
+				        <th>destination</th>
+                        <th>EDIT</th>
+                        <th>DELETE</th>
+                        </tr>
+                     </thead>
+
+                     {% for result in results %}
+                        <tr>
+                           <!--<td>{{ result["cid"] }} </td>-->
+                           <td>{{result["cname"]}}</td>
+                           <td>{{result["packagename"]}}</td>
+                           <td>{{result["destination"]}}</td>
+                           <td align="center"><a href = "{{ url_for('editlink',ID=result['cid']) }}"><i class="fas fa-edit"></a></td>
+                           <td align="center"><a href = "{{ url_for('delete', ID=result['cid']) }}"><i class="fas fa-trash-alt"></a></td>
+                           </tr>
+                     {% endfor %}
+                  </table>
+    </body>
+</html>
